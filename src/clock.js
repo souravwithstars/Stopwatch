@@ -42,20 +42,24 @@ class Clock extends React.Component {
   }
 
   handleStart() {
-    this.intervalId = setInterval(() => {
-      const timesElapsed = this.state.timesElapsed + 1;
-      this.setState(_ => {
-        return { timesElapsed };
-      });
-    }, 1000);
+    if (this.intervalId === 0) {
+      this.intervalId = setInterval(() => {
+        const timesElapsed = this.state.timesElapsed + 1;
+        this.setState(_ => {
+          return { timesElapsed };
+        });
+      }, 1000);
+    }
   }
 
   handlePause() {
     clearInterval(this.intervalId);
+    this.intervalId = 0;
   }
 
   handleReset() {
     clearInterval(this.intervalId);
+    this.intervalId = 0;
     this.setState(_ => {
       return { timesElapsed: 0 };
     });
