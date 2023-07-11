@@ -34,47 +34,44 @@ const Buttons = ({ onStart, onReset, onPause }) => {
   );
 };
 
-class Clock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { timesElapsed: 0 };
-    this.intervalId = 0;
-  }
+const Clock = () => {
+  let [timesElapsed, setTimesElapsed] = React.useState(0);
+  let [intervalId, setIntervalId] = React.useState(0);
 
-  handleStart() {
-    if (this.intervalId === 0) {
-      this.intervalId = setInterval(() => {
-        const timesElapsed = this.state.timesElapsed + 1;
-        this.setState(_ => {
-          return { timesElapsed };
-        });
+  const handleStart = () => {
+    if (intervalId === 0) {
+      intervalId = setInterval(() => {
+        timesElapsed = timesElapsed + 1;
+        setTimesElapsed(timesElapsed);
       }, 1000);
+      setIntervalId(intervalId);
     }
-  }
+  };
 
-  handlePause() {
-    clearInterval(this.intervalId);
-    this.intervalId = 0;
-  }
+  const handlePause = () => {
+    clearInterval(intervalId);
+    intervalId = 0;
+    setIntervalId(intervalId);
+  };
 
-  handleReset() {
-    clearInterval(this.intervalId);
-    this.intervalId = 0;
-    this.setState(_ => {
-      return { timesElapsed: 0 };
-    });
-  }
+  const handleReset = () => {
+    clearInterval(intervalId);
+    intervalId = 0;
+    setIntervalId(intervalId);
+    timesElapsed = 0;
+    setTimesElapsed(timesElapsed);
+  };
 
-  render() {
-    return <div id='stopwatch'>
-      <StopWatch timesElapsed={this.state.timesElapsed} />
+  return (
+    <div id='stopwatch'>
+      <StopWatch timesElapsed={timesElapsed} />
       <Buttons
-        onStart={() => this.handleStart()}
-        onReset={() => this.handleReset()}
-        onPause={() => this.handlePause()}
+        onStart={() => handleStart()}
+        onPause={() => handlePause()}
+        onReset={() => handleReset()}
       />
-    </div>;
-  }
-}
+    </div>
+  );
+};
 
 export default Clock;
